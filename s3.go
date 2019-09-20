@@ -70,6 +70,7 @@ func (m *S3Storage) Upload(ctx context.Context, file *InputFile, path string)err
 		ContentType:        aws.String(http.DetectContentType(buffer)),
 		ContentDisposition: aws.String("attachment"),
 	})
+	_ = file.Source.Close()
 	if err != nil {
 		return err
 	}
