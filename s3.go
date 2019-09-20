@@ -3,13 +3,14 @@ package file
 import (
 	"bytes"
 	"context"
-	"time"
-
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"net/http"
+	"os"
+	"time"
 )
 
 type S3Storage struct {
@@ -20,6 +21,8 @@ type S3Storage struct {
 	Region string
 	Bucket  string
 }
+
+
 
 func NewS3Storage(accessKey string, accessSecretKey string, bucket string, region string, presignURLTimeoutSeconds uint8, endpoint *string) *S3Storage {
 	return &S3Storage{AccessKey: accessKey, AccessSecretKey: accessSecretKey,
@@ -42,6 +45,15 @@ func (m *S3Storage) GetSession() *session.Session {
 	return s
 }
 
+func (m *S3Storage) Download(ctx context.Context, path string, file *os.File)  error {
+	downloader := s3manager.NewDownloader(m.GetSession())
+	_, err := downloader.Download(file,
+		&s3.GetObjectInput{
+			Bucket: aws.String(m.Bucket),
+			Key:    aws.String(path),
+		})
+	return err
+}
 
 func (m *S3Storage) Upload(ctx context.Context, file InputFile, path string)error{
 	size := file.Size
