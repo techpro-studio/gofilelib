@@ -4,8 +4,9 @@ import (
 	"io"
 )
 
+
 type InputFile struct{
-	Source io.Reader
+	Source io.ReadCloser
 	Size int64
 	Name string
 }
