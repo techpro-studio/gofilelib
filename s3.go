@@ -59,7 +59,7 @@ func (m *S3Storage) Upload(ctx context.Context, file *InputFile, path string)err
 	buffer := make([]byte, size)
 	_, err := file.Source.Read(buffer)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	_, err = s3.New(m.GetSession()).PutObjectWithContext(ctx, &s3.PutObjectInput{
