@@ -28,7 +28,7 @@ func (d *DefaultUseCase) GetFiles(ctx context.Context, fileIds []string) ([]Expo
 
 func (d *DefaultUseCase) Upload(ctx context.Context, file *InputFile, directory string) (string, error) {
 	path := fmt.Sprintf("%s/%d.%s", directory, time.Now().Unix(), file.Name)
-	err := d.storage.Upload(ctx, *file, path)
+	err := d.storage.Upload(ctx, file, path)
 	if err != nil{
 		return "", err
 	}

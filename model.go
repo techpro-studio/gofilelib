@@ -1,9 +1,11 @@
 package file
 
-import "mime/multipart"
+import (
+	"io"
+)
 
 type InputFile struct{
-	Source multipart.File
+	Source io.Reader
 	Size int64
 	Name string
 }

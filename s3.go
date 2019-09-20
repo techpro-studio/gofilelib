@@ -23,7 +23,6 @@ type S3Storage struct {
 }
 
 
-
 func NewS3Storage(accessKey string, accessSecretKey string, bucket string, region string, presignURLTimeoutSeconds uint8, endpoint *string) *S3Storage {
 	return &S3Storage{AccessKey: accessKey, AccessSecretKey: accessSecretKey,
 		Bucket: bucket, Region: region, PresignURLTimeoutSeconds:presignURLTimeoutSeconds, Endpoint:endpoint}
@@ -55,7 +54,7 @@ func (m *S3Storage) Download(ctx context.Context, path string, file *os.File)  e
 	return err
 }
 
-func (m *S3Storage) Upload(ctx context.Context, file InputFile, path string)error{
+func (m *S3Storage) Upload(ctx context.Context, file *InputFile, path string)error{
 	size := file.Size
 	buffer := make([]byte, size)
 	_, err := file.Source.Read(buffer)
@@ -76,7 +75,6 @@ func (m *S3Storage) Upload(ctx context.Context, file InputFile, path string)erro
 	}
 	return nil
 }
-
 
 func (m *S3Storage) GetDownloadLink(path string) (string, error) {
 	svc := s3.New(m.GetSession())
