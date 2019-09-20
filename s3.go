@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
+	"io"
 	"net/http"
 	"os"
 	"time"
@@ -58,7 +59,7 @@ func (m *S3Storage) Upload(ctx context.Context, file *InputFile, path string)err
 	size := file.Size
 	buffer := make([]byte, size)
 	_, err := file.Source.Read(buffer)
-	if err != nil {
+	if err != nil && err != io.EOF{
 		return err
 	}
 
